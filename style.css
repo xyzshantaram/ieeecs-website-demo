@@ -1,0 +1,450 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    background: #1a1a1a;
+    overflow: hidden;
+    color: white;
+}
+
+* {
+    font-family: sans-serif;
+}
+
+a,
+a:visited,
+a:link {
+    color: rgb(54, 85, 226);
+}
+
+a:hover,
+a:active {
+    filter: brightness(1.2);
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#menu {
+    position: absolute;
+    left: 2px;
+    display: block;
+    width: 100%;
+    bottom: 0;
+}
+
+#menu-items {
+    width: 100%;
+    display: flex;
+    padding-top: 0.1rem;
+    padding-left: 0.1rem;
+    padding-right: 0.2rem;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.menu-item {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 0.4rem;
+    transition-duration: 0.2s;
+}
+
+.menu-item>.fas {
+    font-size: 2rem;
+}
+
+.menu-item:hover {
+    transform: scale(1.4);
+    color: white;
+    cursor: pointer;
+}
+
+#switcher {
+    margin: 0;
+    z-index: 1000;
+    position: fixed;
+    bottom: 0;
+    height: 4%;
+    width: 100%;
+    background: #c1c1c1;
+    display: flex;
+    align-items: center;
+    padding: 0.1rem;
+
+}
+
+#switcher button {
+    margin: 0.1rem;
+}
+
+#term input[type='text'] {
+    background-color: inherit;
+    outline: none;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 0.2rem;
+    box-sizing: border-box;
+    background: #24bb9a;
+    border: 2px solid black;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition-duration: 0.1s;
+}
+
+button:active {
+    border: 2px solid #303030;
+}
+
+button:not(#close, #minimize, #maximize):hover {
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: 4px 4px #c4e026;
+}
+
+#switcher button.task-button {
+    border: 2px solid #777777;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#switcher button.task-button:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+#switcher button.task-button.active {
+    border: 2px solid #303030;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.window-frame {
+    padding: 1rem;
+    background: #3c3c3c;
+    border-top: none;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.window-frame.terminal-frame {
+    display: flex;
+    flex-direction: column;
+    background: #000000;
+    color: #ffffff;
+    padding: 0;
+    height: 100%;
+}
+
+.window-frame.notepad-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+}
+
+.window-frame.calculator-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+}
+
+.window-frame.browser-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    padding-top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.browser-frame>.window-actions {
+    font-size: 1.2rem;
+    height: 2rem;
+}
+
+.window-frame.mines-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.mines-frame>.window-actions {
+    border-bottom: 2px solid slategray;
+}
+
+.mine-grid {
+    padding-top: 0.5rem;
+}
+
+.mine-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.mine-tile {
+    width: 1.8em;
+    height: 1.8em;
+    padding: 0;
+    margin: 0.15em;
+}
+
+.window-actions>span {
+    display: flex;
+    justify-content: center;
+}
+
+.browser-field:focus {
+    outline: none;
+}
+
+.window-actions>.browser-field {
+    width: 100%;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.ie-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    background: #c1c1c1;
+}
+
+.paint-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.calc-field {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-size: 1.5em;
+    grid-column: span 4;
+    margin: 0 !important;
+    font-family: monospace;
+}
+
+.calc-equals {
+    grid-column: span 4;
+}
+
+.calc-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 0.3rem;
+    padding: 10px;
+}
+
+.calc-items button {
+    font-size: 2rem;
+}
+
+
+
+.window {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    outline: 2px solid white;
+    border: 2px solid black;
+    border-radius: 0.4rem;
+}
+
+.notepad {
+    border-radius: 0;
+    box-sizing: border-box;
+    resize: none;
+    font-family: monospace;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 0.8rem;
+    background-color: #1a1a1a;
+    border: none;
+    color: white;
+}
+
+
+
+.notepad:focus {
+    outline: none;
+}
+
+.window.maximized {
+    width: 100%;
+    height: 96%;
+    box-shadow: none;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.window-actions {
+    width: 100%;
+    height: 3ch;
+    display: flex;
+    align-items: center;
+}
+
+.window-action-button {
+    cursor: pointer;
+    padding: 0.1rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    margin: 0;
+    user-select: none;
+}
+
+.window-action-button:not(:last-child) {
+    margin-right: 0.2rem;
+}
+
+.window-action-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+
+.window-titlebar {
+    height: 3ch;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    text-overflow: ellipsis;
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+    padding: 0.2rem;
+}
+
+.window-titlebar-name {
+    color: white;
+    background: transparent;
+    width: 100%;
+    padding-right: 0.5em;
+    user-select: none;
+    text-align: right;
+}
+
+.window-titlebar-buttons {
+    display: flex;
+    background: transparent;
+    user-select: none;
+    align-items: center;
+}
+
+.window-titlebar-buttons button {
+    border-radius: 50% 50%;
+    color: transparent;
+    width: 2.5ch;
+    height: 2.5ch;
+    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0.2rem;
+    font-size: 1.5ch;
+}
+
+.window-titlebar-buttons button:hover {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+#close {
+    background-color: #f35d5c;
+}
+
+#maximize {
+    background-color: #f6bc3c;
+}
+
+#minimize {
+    background-color: #43cb43;
+}
+
+#switcher-clock {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid gray;
+    font-size: 0.8em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    align-items: center;
+    cursor: pointer;
+}
+
+@keyframes minimize {
+    to {
+        transform: scale(0.7) translate(-50vw, 120vh);
+    }
+}
+
+@keyframes restore {
+    from {
+        transform: scale(0.7) translate(-50vw, 120vh);
+    }
+
+    to {
+        transform: scale(1) translate(0, 0);
+    }
+}
+
+@keyframes grow {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes die {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0);
+    }
+}
+
+input[type='text'] {
+    border: none;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background: #1a1a1a;
+    color: white;
+}
+
+@media only screen and (max-aspect-ratio: 1/1) {
+    :root {
+        --is-screen-too-narrow: 1;
+    }
+}
