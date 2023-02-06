@@ -1,5 +1,7 @@
 import { PWindow } from "./PWindow.js";
 import cf from 'https://esm.sh/campfire.js';
+import cfa from 'https://esm.sh/cf-alert';
+import { saveFile } from "./util.js";
 
 export class Notepad extends PWindow {
     generateContent() {
@@ -10,32 +12,37 @@ export class Notepad extends PWindow {
         // save button
         cf.insert(cf.nu('span.window-action-button', {
             c: 'Save',
-            on: { click: () => this.save(ta.value) }
+            on: { click: async () => await this.save(ta.value) }
         }), { atEndOf: actions });
 
         // close button
         cf.insert(cf.nu('span.window-action-button', {
             c: 'Close',
-            on: { click: () => this.close() }
+            on: { click: async () => await this.close() }
         }), { atEndOf: actions });
     }
 
-    save(contents) {
+    async save(contents) {
         let blob = new Blob([contents], { type: "text/plain;charset=utf-8" });
-        createPrompt('Save as', 'Enter a filename.', // Title, message
-            (name) => saveFile(blob, name), // Success callback
-            'Save', // Button alias
-            (type) => createAlert('Cancelled', // Error callback
-                type == ALERT_CANCELLED ? "Input cancelled." : "Empty filename.",
-                'info'
-            )
-        );
+        try {
+            const name = await cfa.input('text', 'Enter a filename', 'Save as');
+            if (name) {
+                let blob = new Blob([contents], { type: "text/plain;charset=utf-8" });
+                saveFile(blob, name);
+            }
+            else {
+                throw 'Empty filename.';
+            }
+        }
+        catch (e) {
+            await cfa.message(`Error saving: ${e}`);
+        }
     }
 
-    close() {
-        createConfirm('Confirm', 'Are you sure you want to exit?',
-            () => super.close(), () => hideAlert(), // yes and no callbacks
-            "I'm sure", "Cancel" // Button aliases
-        );
+    async close() {
+        const choice = await cfa.confirm('Are you sure you want to exit?');
+        if (choice) {
+            super.close()
+        }
     }
 }
