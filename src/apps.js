@@ -27,7 +27,7 @@ export const apps = {
     },
     'About...': {
         title: 'About',
-        obj: About, width: 300, height: 200,
+        obj: About, width: 300, height: 300,
         desktop: false, icon: '<i class="fas fa-info-circle"></i>'
     },
 }
