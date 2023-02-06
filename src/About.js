@@ -17,7 +17,7 @@ export class About extends PWindow {
             <div style='text-align: center'>A demo of a website concept for IEEE Computer Society, VITC.</div>
             <div style='text-align: center'>This program is free, open-source software under the MIT License.</div>
             <div style='text-align: center'>Copyright © 2021-23 Siddharth Singh</div>
-            <div style='text-align: center'><a href='https://github.com/shantaram3013/pseudows'><i class='fa fa-github'></i> Source code</a></div>`,
+            <div style='text-align: center'><a target=_blank href='https://github.com/shantaram3013/pseudows'><i class='fa fa-github'></i> Source code</a></div>`,
         }
         ), { atEndOf: this.elem });
     }
