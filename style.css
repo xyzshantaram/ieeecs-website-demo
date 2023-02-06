@@ -5,6 +5,11 @@ body {
     background: #1a1a1a;
     overflow: hidden;
     color: white;
+    background-image: url('rover_drop.jpg');
+    backdrop-filter: brightness(0.4) blur(2px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 * {
