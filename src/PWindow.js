@@ -1,4 +1,8 @@
-class Window {
+import { app } from './App.js';
+import cf from 'https://esm.sh/campfire.js';
+import { getCSSCustomProp } from './util.js';
+
+export class PWindow {
     hasChanged = true;
     width = 300;
     height = 240;
@@ -13,11 +17,12 @@ class Window {
 
         this.lastDraw = {}
 
-        this.elem = createElement({
-            id: args.id,
-            className: 'window',
-            parent: document.querySelector("#app")
-        });
+        this.elem = cf.insert(
+            cf.nu(`.window`),
+            {
+                atEndOf: cf.select('#app')
+            }
+        );
 
         this.pos = {
             x: (window.innerWidth / 2 - this.width / 2),
@@ -27,7 +32,6 @@ class Window {
         this.name = args.name;
 
         this.createTitleBar();
-        this.createTaskButton();
         this.generateContent();
         this.update();
 
@@ -36,7 +40,7 @@ class Window {
                 this.zIndex = app.nextZ();
                 this.update();
             }
-            app.activeWindow = this;
+            app.activePWindow = this;
         })
 
         this.elem.style.animation = 'grow 0.2s forwards';
@@ -60,26 +64,12 @@ class Window {
 
     createTitleButton(name, id, fn) {
         let btn = document.createElement('button');
-        btn.innerHTML = name;
+        btn.innerHTML = `<i class='fas ${name}'></i>`;
         btn.id = id;
         btn.addEventListener('click', () => {
             fn.call(this)
         });
         return btn;
-    }
-
-    createTaskButton() {
-        let switcher = document.querySelector('#switcher-buttons');
-        this.taskBtn = createElement({
-            type: 'button',
-            className: 'task-button active',
-            innerHTML: this.name,
-            parent: switcher
-        })
-        this.taskBtn.onmousedown = (e) => {
-            if (e.button === 2) this.close();
-            if (e.button === 0) this.toggleMinimized();
-        }
     }
 
     bringToFront(update = true) {
@@ -88,38 +78,30 @@ class Window {
     }
 
     createTitleBar() {
-        this.titleBar = createElement({
-            className: 'window-titlebar',
-            parent: this.elem
-        })
-
+        this.titleBar = cf.insert(cf.nu('.window-titlebar'), { atEndOf: this.elem });
+        const that = this;
         const set = () => {
-            if (!this.maximized) app.draggedElement = this;
+            console.log('set', app.draggedElement, that);
+            if (!this.maximized) app.draggedElement = that;
         }
 
         const rm = () => {
-            if (app.draggedElement === this) app.draggedElement = null;
+            console.log('rm', app.draggedElement, that);
+            if (app.draggedElement === that) app.draggedElement = null;
         }
 
-        this.titleBarButtons = createElement({
-            className: 'window-titlebar-buttons',
-            children: [
-                this.createTitleButton('<i class="fas fa-times"></i>', 'close', () => this.close()),
-                this.createTitleButton('<i class="fas fa-expand-alt"></i>', 'minimize', () => this.toggleMinimized()),
-                this.createTitleButton('<i class="fas fa-compress-alt"></i>', 'maximize', () => this.toggleMaximized()),
-            ],
-            parent: this.titleBar
-        })
-
-        this.titleBarName = createElement({
-            misc: {
-                onmousedown: set,
-                onmouseup: rm
-            },
-            className: 'window-titlebar-name',
-            innerHTML: this.name,
-            parent: this.titleBar
-        })
+        this.titleBarButtons = cf.insert(cf.nu('.window-titlebar-buttons'), { atEndOf: this.titleBar });
+        [
+            this.createTitleButton('fa-times', 'close', () => this.close()),
+            this.createTitleButton('fa-expand-alt', 'minimize', () => this.toggleMinimized()),
+            this.createTitleButton('fa-compress-alt', 'maximize', () => this.toggleMaximized()),
+        ].forEach(e => this.titleBarButtons.appendChild(e));
+        const name = this.name;
+        this.titleBarName = cf.insert(cf.nu('.window-titlebar-name', {
+            c: name
+        }), { atEndOf: this.titleBar });
+        this.titleBarName.onmouseup = rm;
+        this.titleBarName.onmousedown = set;
     }
 
     generateContent() { }

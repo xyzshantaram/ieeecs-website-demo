@@ -1,24 +1,26 @@
-class Minesweeper extends Window {
+import { PWindow } from "./PWindow.js";
+import { generateMineArray, Board, CellStateEnum, BoardStateEnum, CellFlagEnum } from '../minesweeper.js';
+
+export class Minesweeper extends PWindow {
     generateContent() {
-        let frame = createElement({ parent: this.elem, className: 'window-frame mines-frame' });
-        let actions = createElement({ parent: frame, className: 'window-actions' });
-        createElement({ // save button
-            parent: actions,
-            type: 'span', className: 'window-action-button', innerHTML: 'About...',
-            misc: { onclick: () => this.showAboutNotice(), title: 'About' },
-        })
-        createElement({ // help button
-            parent: actions,
-            type: 'span', className: 'window-action-button', innerHTML: 'Help',
-            misc: { onclick: () => this.showHelp(), title: 'Help' },
-        })
+        const frame = cf.insert(cf.nu('.window-frame.mines-frame'), { atEndOf: this.elem });
+        const actions = cf.insert(cf.nu('.window-actions'), { atEndOf: frame });
 
-        this.gridContainer = createElement({
-            parent: frame,
-            className: 'mine-grid',
-        })
+        // about button
+        cf.insert(cf.nu('span.window-action-button', {
+            c: 'About...',
+            on: { click: () => this.showAboutNotice() }
+        }), { atEndOf: actions });
 
-        this.board = new minesweeper.Board(minesweeper.generateMineArray({
+        // help button
+        cf.insert(cf.nu('span.window-action-button', {
+            c: 'Help',
+            on: { click: () => this.showHelp() }
+        }), { atEndOf: actions });
+
+        this.gridContainer = cf.insert('.mine-grid', { atEndOf: frame });
+
+        this.board = new Board(generateMineArray({
             rows: 15,
             cols: 15,
             mines: 40
@@ -67,7 +69,7 @@ class Minesweeper extends Window {
                     'Finish'
                 )
                 break;
-            case minesweeper.BoardStateEnum.WON:
+            case BoardStateEnum.WON:
                 createAlert(
                     'Congratulations!',
                     `You won the game in ${this.moveCount} moves! Nice!`, 'error',
@@ -87,9 +89,6 @@ class Minesweeper extends Window {
         this.checkWon();
         this.gridContainer.innerHTML = '';
         const grid = this.board.grid();
-
-        const CellStateEnum = minesweeper.CellStateEnum;
-        const CellFlagEnum = minesweeper.CellFlagEnum;
 
         for (let y = 0; y < this.board.numRows(); y++) {
             let row = createElement({ parent: this.gridContainer, className: 'mine-row' })

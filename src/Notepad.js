@@ -1,18 +1,23 @@
-class Notepad extends Window {
+import { PWindow } from "./PWindow.js";
+import cf from 'https://esm.sh/campfire.js';
+
+export class Notepad extends PWindow {
     generateContent() {
-        let elt = createElement({ parent: this.elem, className: 'window-frame notepad-frame' });
-        let actions = createElement({ parent: elt, className: 'window-actions' });
-        let ta = createElement({ parent: elt, type: 'textarea', className: 'notepad' });
-        createElement({ // save button
-            parent: actions,
-            type: 'span', className: 'window-action-button', innerHTML: 'Save',
-            misc: { onclick: () => this.save(ta.value) },
-        })
-        createElement({ // close button
-            parent: actions,
-            type: 'span', className: 'window-action-button', innerHTML: 'Close',
-            misc: { onclick: () => this.close() },
-        })
+        const elt = cf.insert(cf.nu('.window-frame.notepad-frame'), { atEndOf: this.elem });
+        const actions = cf.insert(cf.nu('.window-actions'), { atEndOf: elt });
+        const ta = cf.insert(cf.nu('textarea.notepad'), { atEndOf: elt });
+
+        // save button
+        cf.insert(cf.nu('span.window-action-button', {
+            c: 'Save',
+            on: { click: () => this.save(ta.value) }
+        }), { atEndOf: actions });
+
+        // close button
+        cf.insert(cf.nu('span.window-action-button', {
+            c: 'Close',
+            on: { click: () => this.close() }
+        }), { atEndOf: actions });
     }
 
     save(contents) {

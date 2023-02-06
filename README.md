@@ -5,7 +5,7 @@ A demo for a new website for IEEE Computer Society, VIT Chennai.
 ## Contributing
 
 Feel free to open PRs or issues with suggestions / changes! To add an
-application, create a file for it in `src`, extend the `Window` class, and
+application, create a file for it in `src`, extend the `PWindow` class, and
 override the `generateContent()` method.
 
 ### Acknowledgements

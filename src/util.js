@@ -1,23 +1,7 @@
-"use strict";
-function createElement(args) {
-    let { parent, type, className, id, innerHTML, misc, children, style } = args;
-    if (!type) type = 'div';
-    let elem = document.createElement(type);
-    if (className) elem.className = className;
-    if (id) elem.id = id;
-    if (innerHTML) elem.innerHTML = innerHTML;
-    if (misc) Object.assign(elem, misc);
-    if (children) {
-        for (let child of children) {
-            elem.appendChild(child);
-        }
-    }
-    if (style) Object.assign(elem.style, style);
-    if (parent) parent.appendChild(elem);
-    return elem;
-}
+import cf from 'https://esm.sh/campfire.js';
+import { app } from './App.js';
 
-const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 'string') => {
+export const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 'string') => {
     let response = getComputedStyle(element).getPropertyValue(propKey);
     // Tidy up the string if there's something to work with
     if (response.length) {
@@ -40,7 +24,7 @@ const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 
     return response;
 };
 
-function saveFile(blob, name) {
+export function saveFile(blob, name) {
     let link = createElement({
         type: 'a',
         misc: {
@@ -51,7 +35,7 @@ function saveFile(blob, name) {
     link.click();
 }
 
-function evalArithmetic(string) {
+export function evalArithmetic(string) {
     if (/[^+\-*\/\^().0-9 ]/.test(string)) throw new Error("Non-arithmetic character detected");
     while (/\^/.test(string)) {
         string = string.replace('^', '**');
@@ -59,27 +43,28 @@ function evalArithmetic(string) {
     return eval(string);
 }
 
-function matchesList(el, selectorList) {
+export function matchesList(el, selectorList) {
     for (let x of selectorList) if (el.matches(x)) return true;
     return false;
 }
 
-const launchApp = (item) => {
+export const launchApp = (item) => {
     app.addWindow(item.obj, item.width, item.height, { name: item.title });
 }
 
-function populateItems(apps) {
+export function populateItems(apps) {
     let menuList = document.querySelector("#menu-items");
     menuList.innerHTML = '';
     for (let key in apps) {
         const item = apps[key];
         const icon = item.icon || '';
 
-        const elt = createElement({
-            parent: menuList,
-            className: 'menu-item', innerHTML: `${icon}`,
-            misc: { onclick: () => launchApp(item), title: item.title },
-            type: 'button'
-        })
+        cf.insert(cf.nu('button.menu-item', {
+            c: icon,
+            on: {
+                click: () => launchApp(item)
+            },
+            m: { title: item.title }, raw: true
+        }), { atEndOf: menuList })
     }
 }

@@ -1,4 +1,8 @@
-class Calculator extends Window {
+import { PWindow } from "./PWindow.js";
+import cf from 'https://esm.sh/campfire.js';
+import { evalArithmetic } from "./util.js";
+
+export class Calculator extends PWindow {
     static BUTTONS = [1, 2, 3, '+', 4, 5, 6, '-', 7, 8, 9, '*', 'C', 0, '^', '/'];
     constructor(width, height, args) {
         super(width, height, args);
@@ -8,38 +12,19 @@ class Calculator extends Window {
     toggleMaximized() { }
 
     generateContent() {
-        let frame = createElement({
-            className: 'window-frame calculator-frame',
-            parent: this.elem
-        })
-
-        this.field = createElement({
-            type: 'input', className: 'calc-field',
-            misc: { type: 'text' }
-        })
-
-        let container = createElement({
-            parent: frame,
-            className: 'calc-items',
-            children: [this.field]
-        })
+        let frame = cf.insert(cf.nu('.window-frame.calculator-frame'), { atEndOf: this.elem })
+        this.field = cf.nu('input.calc-field', { misc: { type: 'text' } })
+        const container = cf.insert(cf.nu('.calc-items'), { atEndOf: frame });
+        cf.insert(this.field, { atEndOf: container });
 
         const that = this;
         Calculator.BUTTONS.forEach((button) => {
-            let btn = createElement({
-                parent: container,
-                type: 'button', innerHTML: button.toString(),
-                misc: { type: 'button', value: button }
-            })
+            let btn = cf.insert(cf.nu('button', { c: button.toString(), misc: { type: 'button', value: button } }), { atEndOf: container })
             if (button === 'C') btn.onclick = () => that.field.value = '';
             else btn.onclick = () => that.field.value += btn.value;
         })
 
-        let equals = createElement({
-            parent: container,
-            type: 'button', className: 'calc-equals', innerHTML: '=',
-            misc: { value: '=', onclick: () => this.compute(this.field) },
-        })
+        cf.insert(cf.nu('button.calc-equals', { c: '=', misc: { value: '=', onclick: () => this.compute(this.field) } }), { atEndOf: container })
     }
 
     compute(field) {

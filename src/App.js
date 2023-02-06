@@ -1,9 +1,9 @@
-class App {
+export class App {
     menuOpen = false;
     highestZ = 0;
     windowList = [];
     draggedElement = null;
-    activeWindow = null;
+    activePWindow = null;
     lastMousePos = {
         x: null,
         y: null
@@ -19,4 +19,5 @@ class App {
         new cls(width, height, args);
     }
 }
-let app;
+
+export const app = new App();

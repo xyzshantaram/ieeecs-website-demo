@@ -1,15 +1,19 @@
+import { app } from './src/App.js';
+import { populateItems } from './src/util.js';
+import { apps } from "./src/apps.js";
+import { launchApp } from './src/util.js';
+import { matchesList } from './src/util.js';
+
 function init() {
-    app = new App();
     window.addEventListener('mousemove', (e) => {
-        if (app.draggedElement != null) {
-            if (!app.lastMousePos.x || !app.lastMousePos.y) return;
+        if (!app.draggedElement) return;
+        if (!app.lastMousePos.x || !app.lastMousePos.y) return;
 
-            let d = { x: e.clientX - app.lastMousePos.x, y: e.clientY - app.lastMousePos.y };
-            app.draggedElement.pos.x += d.x;
-            app.draggedElement.pos.y += d.y;
+        let d = { x: e.clientX - app.lastMousePos.x, y: e.clientY - app.lastMousePos.y };
+        app.draggedElement.pos.x += d.x;
+        app.draggedElement.pos.y += d.y;
 
-            app.draggedElement.update();
-        }
+        app.draggedElement.update();
         app.lastMousePos = { x: e.clientX, y: e.clientY }
     });
 

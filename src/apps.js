@@ -1,4 +1,10 @@
-const apps = {
+import { Notepad } from "./Notepad.js"
+import { Terminal } from "./Terminal.js"
+import { Calculator } from "./Calculator.js"
+import { Minesweeper } from "./Minesweeper.js"
+import { About } from "./About.js"
+
+export const apps = {
     'Notepad': {
         title: 'Notepad',
         obj: Notepad, width: 400, height: 300,

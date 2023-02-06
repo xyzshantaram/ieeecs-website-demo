@@ -6,12 +6,12 @@ body {
     background: #c1c1c1;
     height: 100vh;
     margin: 0;
-    font-family: 'Levi Windows', monospace;
+    font-family: 'Levi PWindows', monospace;
 }
 
 @font-face {
-    font-family: 'Levi Windows';
-    src: url('/Levi\ Windows.ttf');
+    font-family: 'Levi PWindows';
+    src: url('/Levi\ PWindows.ttf');
 }
 
 .hint {
