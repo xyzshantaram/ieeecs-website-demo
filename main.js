@@ -7,7 +7,8 @@ import { matchesList } from './src/util.js';
 function init() {
     window.addEventListener('mousemove', (e) => {
         if (!app.draggedElement) return;
-        if (!app.lastMousePos.x || !app.lastMousePos.y) return;
+        if (!app.lastMousePos.x || !app.lastMousePos.y)
+            app.lastMousePos = { x: e.clientX, y: e.clientY };
 
         let d = { x: e.clientX - app.lastMousePos.x, y: e.clientY - app.lastMousePos.y };
         app.draggedElement.pos.x += d.x;
