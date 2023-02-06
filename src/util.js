@@ -25,14 +25,12 @@ export const getCSSCustomProp = (propKey, element = document.documentElement, ca
 };
 
 export function saveFile(blob, name) {
-    let link = createElement({
-        type: 'a',
+    cf.nu('a', {
         misc: {
             href: URL.createObjectURL(blob),
             download: name || 'file.txt'
         }
-    })
-    link.click();
+    }).click();
 }
 
 export function evalArithmetic(string) {
