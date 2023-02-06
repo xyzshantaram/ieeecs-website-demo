@@ -93,8 +93,8 @@ export class PWindow {
         this.titleBarButtons = cf.insert(cf.nu('.window-titlebar-buttons'), { atEndOf: this.titleBar });
         [
             this.createTitleButton('fa-times', 'close', () => this.close()),
-            this.createTitleButton('fa-expand-alt', 'minimize', () => this.toggleMinimized()),
-            this.createTitleButton('fa-compress-alt', 'maximize', () => this.toggleMaximized()),
+            this.createTitleButton('fa-expand-alt', 'minimize', () => this.toggleMaximized()),
+            this.createTitleButton('fa-compress-alt', 'maximize', () => this.toggleMinimized()),
         ].forEach(e => this.titleBarButtons.appendChild(e));
         const name = this.name;
         this.titleBarName = cf.insert(cf.nu('.window-titlebar-name', {
@@ -109,12 +109,10 @@ export class PWindow {
     toggleMinimized() {
         this.minimized = !this.minimized;
         this.elem.style.animation = `${this.minimized ? 'minimize' : 'restore'} 0.4s forwards`;
-        this.taskBtn.classList[this.minimized ? 'remove' : 'add']('active');
     }
 
     toggleMaximized() {
         this.maximized = !this.maximized;
-        this.taskBtn.classList[this.maximized ? 'add' : 'remove']('maximized');
         if (this.maximized) {
             this.preMaximize = {
                 x: this.pos.x,
