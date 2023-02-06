@@ -435,7 +435,7 @@ button:not(#close, #minimize, #maximize):hover {
     }
 }
 
-input[type='text'] {
+input[type='text']:not(#alert-input) {
     border: none;
     margin-left: 1rem;
     margin-right: 1rem;
