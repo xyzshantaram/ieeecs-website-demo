@@ -19,11 +19,7 @@ function init() {
     });
 
     window.addEventListener('click', (e) => {
-        if (!matchesList(e.target,
-            ['.desktop-item', '.desktop-icon', '.desktop-item.selected', '.desktop-label', '.desktop-icon > i']
-        )) {
-            document.querySelectorAll('.desktop-item.selected').forEach((elem) => elem.classList.remove('selected'));
-        }
+        if (app.draggedElement) app.draggedElement = null;
     })
 
     populateItems(apps);
