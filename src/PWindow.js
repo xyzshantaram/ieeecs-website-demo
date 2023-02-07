@@ -54,7 +54,7 @@ export class PWindow {
     update() {
         let styles = {
             width: this.maximized ? '100%' : this.width + 'px',
-            height: this.maximized ? '96%' : this.height + 'px',
+            height: this.maximized ? 'calc(100% - 3.8rem)' : this.height + 'px',
             left: this.maximized ? '0' : this.pos.x + 'px',
             top: this.maximized ? '0' : this.pos.y + 'px',
             zIndex: this.zIndex
